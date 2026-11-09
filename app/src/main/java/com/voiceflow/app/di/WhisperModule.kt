@@ -1,10 +1,16 @@
 package com.voiceflow.app.di
 
+import android.content.Context
+import com.voiceflow.app.whisper.ModelLoader
 import com.voiceflow.app.whisper.WhisperEngine
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Singleton
 
 @Module
@@ -13,5 +19,18 @@ object WhisperModule {
 
     @Provides
     @Singleton
-    fun provideWhisperEngine(): WhisperEngine = WhisperEngine()
+    fun provideWhisperEngine(
+        @ApplicationContext context: Context,
+    ): WhisperEngine {
+        val engine = WhisperEngine()
+        // Kick off model extraction + load in the background at app start.
+        // The engine stays in UNLOADED state until the coroutine completes;
+        // BubbleViewModel.transcribe() checks state and returns a failure result
+        // gracefully while the model loads (~1–2s on first run, instant thereafter).
+        CoroutineScope(Dispatchers.IO).launch {
+            val modelPath = ModelLoader.ensureModel(context)
+            engine.loadModel(modelPath)
+        }
+        return engine
+    }
 }
