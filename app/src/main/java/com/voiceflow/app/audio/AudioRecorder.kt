@@ -3,6 +3,7 @@ package com.voiceflow.app.audio
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -56,6 +57,7 @@ class AudioRecorder(
     val sampleRateHz: Int = 16000,
     private val chunkSizeMs: Int = 100,
     private val provider: AudioRecordProvider? = null,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     val channelCount: Int = 1
 
@@ -91,7 +93,7 @@ class AudioRecorder(
         } finally {
             isRecording = false
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
     fun stopRecording() {
         isRecording = false

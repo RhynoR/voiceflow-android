@@ -8,12 +8,14 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 /**
  * Unit tests for BridgeProtocol — message serialization / deserialization.
  * Uses Robolectric to get a real Android Bundle without an emulator.
  */
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [34])
 class BridgeProtocolTest {
 
     // ── INJECT_TEXT ──────────────────────────────────────────────────────────

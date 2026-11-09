@@ -131,6 +131,7 @@ dependencies {
     testImplementation(libs.coroutines.test)
     testImplementation(libs.room.testing)
     testImplementation(libs.robolectric)
+    testImplementation(libs.test.core)
 
     // Instrumented tests
     androidTestImplementation(libs.androidx.junit)
