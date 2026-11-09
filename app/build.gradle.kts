@@ -49,7 +49,7 @@ android {
 
     externalNativeBuild {
         cmake {
-            path = "src/main/cpp/CMakeLists.txt"
+            path = file("src/main/cpp/CMakeLists.txt")
             version = "3.22.1"
         }
     }
@@ -113,6 +113,9 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
 
+    // Material (XML theme + components)
+    implementation(libs.material)
+
     // Networking (model download)
     implementation(libs.okhttp)
 
@@ -127,6 +130,7 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.coroutines.test)
     testImplementation(libs.room.testing)
+    testImplementation(libs.robolectric)
 
     // Instrumented tests
     androidTestImplementation(libs.androidx.junit)

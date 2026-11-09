@@ -6,12 +6,12 @@ import com.voiceflow.app.audio.AudioRecorder
 import com.voiceflow.app.audio.VoiceActivityDetector
 import com.voiceflow.app.data.repository.TranscriptionRepository
 import com.voiceflow.app.whisper.WhisperEngine
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
 enum class BubbleState { IDLE, LISTENING, PROCESSING, DONE }
 
@@ -21,7 +21,7 @@ data class BubbleUiState(
     val errorMessage: String? = null,
 )
 
-@HiltViewModel
+@Singleton
 class BubbleViewModel @Inject constructor(
     private val audioRecorder: AudioRecorder,
     private val vad: VoiceActivityDetector,

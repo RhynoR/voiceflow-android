@@ -7,7 +7,7 @@
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
 #ifndef WHISPER_STUB
-#include "whisper.cpp/whisper.h"
+#include "include/whisper.h"
 #endif
 
 extern "C" {
