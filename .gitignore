@@ -1,0 +1,21 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# NDK / CMake build artifacts
+app/.cxx/
+app/build/
+
+# Whisper model (downloaded at runtime — not committed)
+app/src/main/assets/ggml-*.bin
+
+# Signing keystores
+*.jks
+*.keystore
