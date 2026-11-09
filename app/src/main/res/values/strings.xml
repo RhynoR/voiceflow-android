@@ -2,6 +2,4 @@
 <resources>
     <string name="app_name">VoiceFlow</string>
     <string name="accessibility_service_description">VoiceFlow uses accessibility to inject transcribed text into focused fields. No text or audio is transmitted externally.</string>
-    <string name="notification_channel_name">VoiceFlow Service</string>
-    <string name="notification_channel_description">Shows while VoiceFlow dictation overlay is active</string>
 </resources>

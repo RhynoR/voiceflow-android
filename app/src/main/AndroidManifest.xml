@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- ── Permissions ──────────────────────────────────────────────────── -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -13,7 +14,8 @@
 
     <application
         android:name=".VoiceFlowApp"
-        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="false"
         android:icon="@drawable/ic_mic"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -22,8 +24,7 @@
         <!-- Settings entry-point Activity -->
         <activity
             android:name=".ui.settings.SettingsActivity"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -40,7 +41,8 @@
         <service
             android:name=".service.FlowRecoveryJobService"
             android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            tools:ignore="SpecifyJobSchedulerIdRange" />
 
         <!-- Boot receiver — restarts FlowService after reboot -->
         <receiver

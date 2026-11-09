@@ -1,5 +1,7 @@
 package com.voiceflow.app.ui.bubble
 
+import android.Manifest
+import androidx.annotation.RequiresPermission
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.voiceflow.app.audio.AudioRecorder
@@ -35,6 +37,7 @@ class BubbleViewModel @Inject constructor(
     // Raw PCM accumulator
     private val pcmBuffer = mutableListOf<Short>()
 
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     fun onMicTouchDown() {
         if (_uiState.value.bubbleState != BubbleState.IDLE) return
         vad.reset()
@@ -48,6 +51,7 @@ class BubbleViewModel @Inject constructor(
         processBuffer()
     }
 
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     private fun startRecording() {
         viewModelScope.launch {
             audioRecorder.startRecording().collect { chunk ->

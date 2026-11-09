@@ -1,5 +1,6 @@
 package com.voiceflow.app.ui.bubble
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -18,7 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -37,14 +38,15 @@ import kotlin.math.roundToInt
  * Hosts mic icon, pulsing listening indicator, spinner, and done checkmark.
  * Draggable via pointer input.
  */
+@SuppressLint("MissingPermission") // RECORD_AUDIO is checked before FlowService starts
 @Composable
 fun BubbleOverlay(
     viewModel: BubbleViewModel,
     onPositionChanged: (IntOffset) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    var offsetX by remember { mutableStateOf(0f) }
-    var offsetY by remember { mutableStateOf(0f) }
+    var offsetX by remember { mutableFloatStateOf(0f) }
+    var offsetY by remember { mutableFloatStateOf(0f) }
 
     Box(
         contentAlignment = Alignment.Center,

@@ -1,8 +1,11 @@
 package com.voiceflow.app.audio
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
+import androidx.annotation.RequiresPermission
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -22,11 +25,12 @@ interface AudioRecordProvider {
 /**
  * Production AudioRecordProvider backed by [AudioRecord].
  */
-class DefaultAudioRecordProvider(
+class DefaultAudioRecordProvider @RequiresPermission(Manifest.permission.RECORD_AUDIO) constructor(
     sampleRateHz: Int,
     bufferSize: Int,
 ) : AudioRecordProvider {
 
+    @SuppressLint("MissingPermission") // permission required by constructor annotation
     private val audioRecord = AudioRecord(
         MediaRecorder.AudioSource.MIC,
         sampleRateHz,
@@ -79,6 +83,7 @@ class AudioRecorder(
      * Starts recording and emits PCM chunks as a cold [Flow].
      * The flow completes when [stopRecording] is called.
      */
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     fun startRecording(): Flow<ShortArray> = flow {
         isRecording = true
         val p = provider ?: DefaultAudioRecordProvider(sampleRateHz, minBufferSize)
