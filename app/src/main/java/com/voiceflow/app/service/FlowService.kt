@@ -17,6 +17,8 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.os.Messenger
+import android.provider.Settings
+import android.util.Log
 import android.view.Gravity
 import android.view.WindowManager
 import androidx.compose.runtime.Recomposer
@@ -127,16 +129,32 @@ class FlowService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStateRe
 
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            startForeground(
-                NOTIFICATION_ID,
-                buildNotification(),
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE,
-            )
-        } else {
-            startForeground(NOTIFICATION_ID, buildNotification())
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                startForeground(
+                    NOTIFICATION_ID,
+                    buildNotification(),
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE,
+                )
+            } else {
+                startForeground(NOTIFICATION_ID, buildNotification())
+            }
+        } catch (e: Exception) {
+            // e.g. SecurityException when RECORD_AUDIO isn't granted, or the
+            // service was started from the background on Android 12+.
+            Log.e(TAG, "startForeground failed — stopping service", e)
+            stopSelf()
+            return
         }
-        addOverlay()
+        if (Settings.canDrawOverlays(this)) {
+            try {
+                addOverlay()
+            } catch (e: Exception) {
+                Log.e(TAG, "Could not add overlay bubble", e)
+            }
+        } else {
+            Log.w(TAG, "Overlay permission not granted — bubble not shown")
+        }
         bindToBridgeService()
         scheduleRecoveryJob()
         isRunning = true
@@ -257,6 +275,7 @@ class FlowService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStateRe
         var isRunning: Boolean = false
             private set
 
+        private const val TAG = "FlowService"
         private const val NOTIFICATION_ID = 1
         private const val CHANNEL_ID = "voiceflow_service"
     }

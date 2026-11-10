@@ -17,8 +17,14 @@ class FlowRecoveryJobService : JobService() {
         Log.d(TAG, "Recovery job triggered")
         if (!FlowService.isRunning) {
             Log.i(TAG, "FlowService not running — restarting")
-            val intent = Intent(this, FlowService::class.java)
-            startForegroundService(intent)
+            // A JobService runs in the background, where Android 12+ throws
+            // ForegroundServiceStartNotAllowedException and Android 14+ refuses
+            // microphone FGS. Catch it instead of crashing every 15 minutes.
+            try {
+                startForegroundService(Intent(this, FlowService::class.java))
+            } catch (e: Exception) {
+                Log.w(TAG, "Could not restart FlowService from background", e)
+            }
         }
         jobFinished(params, false)
         return false

@@ -17,9 +17,9 @@ extern "C" {
  * Returns a native context handle (cast to jlong) on success, or 0 on failure.
  */
 JNIEXPORT jlong JNICALL
-Java_com_voiceflow_app_whisper_WhisperEngine_initModel(
+Java_com_voiceflow_app_whisper_WhisperEngine_initModelNative(
         JNIEnv *env,
-        jobject /* this */,
+        jclass /* clazz */,
         jstring modelPath) {
 
 #ifdef WHISPER_STUB
@@ -53,9 +53,9 @@ Java_com_voiceflow_app_whisper_WhisperEngine_initModel(
  * Returns the transcribed text as a Java String.
  */
 JNIEXPORT jstring JNICALL
-Java_com_voiceflow_app_whisper_WhisperEngine_transcribe(
+Java_com_voiceflow_app_whisper_WhisperEngine_transcribeNative(
         JNIEnv *env,
-        jobject /* this */,
+        jclass /* clazz */,
         jlong ctxHandle,
         jfloatArray pcmSamples) {
 
@@ -120,9 +120,9 @@ Java_com_voiceflow_app_whisper_WhisperEngine_transcribe(
  * Frees a whisper context created by initModel.
  */
 JNIEXPORT void JNICALL
-Java_com_voiceflow_app_whisper_WhisperEngine_freeModel(
+Java_com_voiceflow_app_whisper_WhisperEngine_freeModelNative(
         JNIEnv *env,
-        jobject /* this */,
+        jclass /* clazz */,
         jlong ctxHandle) {
 
 #ifdef WHISPER_STUB

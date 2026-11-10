@@ -55,7 +55,10 @@ class WhisperEngine(
             state = WhisperState.LOADING
             val handle = try {
                 bridge.initModel(modelPath)
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
+                // Throwable, not Exception: a missing/mismatched native library
+                // throws UnsatisfiedLinkError (an Error), which would otherwise
+                // escape and kill the process.
                 state = WhisperState.UNLOADED
                 return
             }
@@ -90,7 +93,7 @@ class WhisperEngine(
                 val text = bridge.transcribe(ctxHandle, pcmSamples)
                 state = WhisperState.READY
                 TranscriptionResult(text = text, success = true)
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 state = WhisperState.READY
                 TranscriptionResult(text = "", success = false, errorMessage = e.message)
             }
