@@ -20,3 +20,6 @@ app/src/main/assets/ggml-*.bin
 *.jks
 *.keystore
 keystore.properties
+
+# Kotlin compiler session files
+.kotlin/
