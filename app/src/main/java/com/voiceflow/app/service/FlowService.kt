@@ -11,8 +11,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.pm.ServiceInfo
 import android.graphics.PixelFormat
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import android.os.Messenger
 import android.view.Gravity
@@ -125,7 +127,15 @@ class FlowService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStateRe
 
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
-        startForeground(NOTIFICATION_ID, buildNotification())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            startForeground(
+                NOTIFICATION_ID,
+                buildNotification(),
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE,
+            )
+        } else {
+            startForeground(NOTIFICATION_ID, buildNotification())
+        }
         addOverlay()
         bindToBridgeService()
         scheduleRecoveryJob()

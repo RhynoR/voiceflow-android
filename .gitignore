@@ -16,6 +16,7 @@ app/build/
 # Whisper model (downloaded at runtime — not committed)
 app/src/main/assets/ggml-*.bin
 
-# Signing keystores
+# Signing keystores and credentials
 *.jks
 *.keystore
+keystore.properties
